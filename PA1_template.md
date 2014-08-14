@@ -1,8 +1,8 @@
+# Reproducible Research
 # Peer Assessment #1
-## MMCJ - 17/08/2014
-========================================================
+## MMCJ - 17/08/2014 - V. 2.0
+# =====================================================
 
-Loading and preprocessing the data
 
 The data for this assignment refers to Movement Measure
 
@@ -21,36 +21,37 @@ The dataset is stored in a comma-separated-value (CSV) file and there are a tota
 # TO BE REMOVED
 setwd("c:/Users/Moacyr/Dropbox/week2_reproducibleResearch/RepData_PeerAssessment1/activity")
 
+## Loading and preprocessing the data
+
 Setting the data directory
 
 ```r
-opts_knit$set(root.dir = "c:/Users/Moacyr/Dropbox/week2_reproducibleResearch/RepData_PeerAssessment1/activity")
+opts_knit$set(root.dir = 'c:/Users/Moacyr/Dropbox/week2_reproducibleResearch/RepData_PeerAssessment1/activity')
 ```
 
 
 Reading data
 
 ```r
-activity <- read.csv("activity.csv", header = TRUE, colClasses = c("integer", 
-    "character", "integer"))
+activity<-read.csv("activity.csv", header=TRUE, colClasses=c("integer", "character", "integer"))
 ```
 
  
 Cleaning data, removing all "NA" data
 
 ```r
-activityCleaned <- subset(activity, steps != "NA")
+activityCleaned<-subset(activity, steps!="NA")
 head(activityCleaned)
 ```
 
 ```
-##     steps       date interval
-## 289     0 2012-10-02        0
-## 290     0 2012-10-02        5
-## 291     0 2012-10-02       10
-## 292     0 2012-10-02       15
-## 293     0 2012-10-02       20
-## 294     0 2012-10-02       25
+    steps       date interval
+289     0 2012-10-02        0
+290     0 2012-10-02        5
+291     0 2012-10-02       10
+292     0 2012-10-02       15
+293     0 2012-10-02       20
+294     0 2012-10-02       25
 ```
 
 
@@ -58,42 +59,33 @@ head(activityCleaned)
 
 For this part of the assignment, you can ignore the missing values in the dataset.
 
-  ## Make a histogram of the total number of steps taken each day
+  1. Make a histogram of the total number of steps taken each day
 
-  ## Calculate and report the mean and median total number of steps taken per day
+  2. alculate and report the mean and median total number of steps taken per day
    
 The Histogram   
 
 ```r
-hist(activity$steps, main = "Histogram\n Number of Steps", col = "red")
+hist (activity$steps, main="Histogram\n Number of Steps", col="red")
 ```
 
-![plot of chunk numberSteps](figure/numberSteps.png) 
+![plot of chunk numberSteps](PA1_template-figure/numberSteps.png) 
 
 
 Calculating Mean and Median of steps taken per day
 
 ```r
-resultMean <- aggregate(activityCleaned$steps ~ activityCleaned$date, FUN = mean, 
-    data = activityCleaned)
-resultMedian <- aggregate(activityCleaned$steps ~ activityCleaned$date, FUN = median, 
-    data = activityCleaned)
-FinalResult <- data.frame(cbind(resultMean, resultMedian[, 2]))
-names(FinalResult) <- c("Date", "Mean", "Median")
+resultMean<-aggregate(activityCleaned$steps ~ activityCleaned$date, FUN = mean, data=activityCleaned)
+resultMedian<-aggregate(activityCleaned$steps ~ activityCleaned$date, FUN = median, data=activityCleaned)
+FinalResult<-data.frame(cbind(resultMean,resultMedian[,2]))
+names(FinalResult)<-c("Date", "Mean", "Median")
 library(xtable)
-```
-
-```
-## Warning: package 'xtable' was built under R version 2.15.3
-```
-
-```r
-xt <- xtable(FinalResult)
-print(xt, type = "html")
+xt<-xtable(FinalResult)
+print(xt, type="html")
 ```
 
 <!-- html table generated in R 2.15.0 by xtable 1.7-3 package -->
-<!-- Wed Aug 13 16:49:53 2014 -->
+<!-- Thu Aug 14 12:37:15 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Date </TH> <TH> Mean </TH> <TH> Median </TH>  </TR>
   <TR> <TD align="right"> 1 </TD> <TD> 2012-10-02 </TD> <TD align="right"> 0.44 </TD> <TD align="right"> 0.00 </TD> </TR>
@@ -154,105 +146,98 @@ print(xt, type = "html")
  
 # What is the average daily activity pattern?
 
-    Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
+    1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
-    Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+    2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
 ```r
-teste <- aggregate(activity$steps ~ activity$interval, FUN = mean, data = activity)
-plot(teste[, 1], teste[, 2], type = "l", main = "Time Series \nAverage # steps VS 5-minute interval", 
-    ylab = "Avg # of steps", xlab = "5-min interval")
-abline(v = teste[teste[, 2] == max(teste[, 2]), ][1], col = "blue", lty = 2, 
-    lwd = 1)
-text(teste[teste[, 2] == max(teste[, 2]), ][1], 200, teste[teste[, 2] == max(teste[, 
-    2]), ][1], pos = 4)
+  stepsAvg<-aggregate(activity$steps ~ activity$interval, FUN = mean, data=activity)
+  plot(stepsAvg[,1], stepsAvg[,2], type="l", main="Time Series \nAverage # steps VS 5-minute interval",
+       ylab="Avg # of steps", xlab="5-min interval")
+  abline(v=stepsAvg[stepsAvg[,2]==max(stepsAvg[,2]),][1],col = "blue",lty=2,lwd=1)
+  text(stepsAvg[stepsAvg[,2]==max(stepsAvg[,2]),][1],200, stepsAvg[stepsAvg[,2]==max(stepsAvg[,2]),][1],pos=4)
 ```
 
-![plot of chunk activityPattern](figure/activityPattern.png) 
+![plot of chunk activityPattern](PA1_template-figure/activityPattern.png) 
 
 ```r
-paste("The maximum number of avg step are obtained in Time interval:", teste[teste[, 
-    2] == max(teste[, 2]), ][1])
+  paste("The maximum number of avg step are obtained in Time interval:",stepsAvg[stepsAvg[,2]==max(stepsAvg[,2]),][1])
 ```
 
 ```
-## [1] "The maximum number of avg step are obtained in Time interval: 835"
+[1] "The maximum number of avg step are obtained in Time interval: 835"
 ```
 
-
+ 
 
 # Imputing missing values
 
 Note that there are a number of days/intervals where there are missing values (coded as NA). The presence of missing days may introduce bias into some calculations or summaries of the data.
 
-    Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
+    1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
-    Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+    2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-    Create a new dataset that is equal to the original dataset but with the missing data filled in.
+    3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
-    Make a histogram of the total number of steps taken each day and 
-    Calculate and report the mean and median total number of steps taken per day. 
-    Do these values differ from the estimates from the first part of the assignment?
-    What is the impact of imputing missing data on the estimates of the total daily number of steps?
+    4. Make a histogram of the total number of steps taken each day and 
+    5. Calculate and report the mean and median total number of steps taken per day. 
+    6. Do these values differ from the estimates from the first part of the assignment?
+    7. What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 obtaining the total # of NA´s
 
 ```r
-total <- sum(is.na(activity$steps))
+total<-sum(is.na(activity$steps))
 ```
 
  
 The number of NA in our archive is 2304.
  
-The strategy to fill in all missing values will a global Mean
+The strategy to fill in all missing values will a global Mean. Creating new archive.
 
 ```r
-stepsFilled <- replace(activity$steps, is.na(activity$steps), mean(activity$steps, 
-    na.rm = TRUE))
-newActivity <- as.data.frame(cbind(as.numeric(stepsFilled), activity$date, activity$interval))
-names(newActivity) <- c("stepFilled", "Date", "interval")
+ stepsFilled<-replace(activity$steps, is.na(activity$steps), mean(activity$steps, na.rm=TRUE))
+ newActivity<-as.data.frame(cbind(as.numeric(stepsFilled), activity$date, activity$interval))
+ names(newActivity)<-c("stepFilled", "Date", "interval")
 head(newActivity)
 ```
 
 ```
-##         stepFilled       Date interval
-## 1 37.3825995807128 2012-10-01        0
-## 2 37.3825995807128 2012-10-01        5
-## 3 37.3825995807128 2012-10-01       10
-## 4 37.3825995807128 2012-10-01       15
-## 5 37.3825995807128 2012-10-01       20
-## 6 37.3825995807128 2012-10-01       25
+        stepFilled       Date interval
+1 37.3825995807128 2012-10-01        0
+2 37.3825995807128 2012-10-01        5
+3 37.3825995807128 2012-10-01       10
+4 37.3825995807128 2012-10-01       15
+5 37.3825995807128 2012-10-01       20
+6 37.3825995807128 2012-10-01       25
 ```
 
-str(newActivity)
+ 
 Histogram of the New filled archive
 
 ```r
-hist(as.numeric(newActivity[, 1]), main = "Histogram\n Number of Steps\n filled by global Mean", 
-    xlab = "# of Steps", col = "blue")
+hist (as.numeric(newActivity[,1]), main="Histogram\n Number of Steps\n filled by global Mean",xlab="# of Steps", col="blue")
 ```
 
-![plot of chunk hist_newfile](figure/hist_newfile.png) 
+![plot of chunk hist_newfile](PA1_template-figure/hist_newfile.png) 
 
 
 calculating and reporting new mean and median
 
 ```r
-resultMeanF <- aggregate(as.numeric(newActivity[, 1]) ~ newActivity[, 2], FUN = mean, 
-    data = newActivity)
-resultMedianF <- aggregate(as.numeric(newActivity[, 1]) ~ newActivity[, 2], 
-    FUN = median, data = newActivity)
-FinalResultF <- data.frame(cbind(resultMeanF, resultMedianF[, 2]))
-names(FinalResultF) <- c("Date", "Mean", "Median")
+resultMeanF<-aggregate(as.numeric(newActivity[,1]) ~ newActivity[,2], FUN = mean, data=newActivity)
+resultMedianF<-aggregate(as.numeric(newActivity[,1]) ~ newActivity[,2], FUN = median, data=newActivity)
+FinalResultF<-data.frame(cbind(resultMeanF,resultMedianF[,2]))
+names(FinalResultF)<-c("Date", "Mean", "Median")
 library(xtable)
-xtF <- xtable(FinalResultF)
-print(xtF, type = "html")
+xtF<-xtable(FinalResultF)
+print(xtF, type="html")
 ```
 
 <!-- html table generated in R 2.15.0 by xtable 1.7-3 package -->
-<!-- Wed Aug 13 16:49:54 2014 -->
+<!-- Thu Aug 14 12:37:16 2014 -->
 <TABLE border=1>
 <TR> <TH>  </TH> <TH> Date </TH> <TH> Mean </TH> <TH> Median </TH>  </TR>
   <TR> <TD align="right"> 1 </TD> <TD> 2012-10-01 </TD> <TD align="right"> 276.00 </TD> <TD align="right"> 276.00 </TD> </TR>
@@ -319,48 +304,44 @@ print(xtF, type = "html")
    </TABLE>
 
 
+There are differences, and the global mean is increased.
+
 # Are there differences in activity patterns between weekdays and weekends?
 
 For this part the weekdays() function may be of some help here. Use the dataset with the filled-in missing values for this part.
 
-    Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
+    1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day.
 
-    Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). The plot should look something like the following, which was creating using simulated data:
-
+    2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). 
 
 Creating a factor vector and subsets the original archive into weekdays and weekends in order to generate the
 comparative panel
 
-
 ```r
-# Create a fVector, since 1:9504 are weekdays, and the others are weekends
-fVector <- c(rep("weekday", 9504), rep("weekend", 8064))
-newActivity[, 3] <- as.numeric(as.character(newActivity[, 3]))
-newActivity[, 2] <- as.Date(as.character(newActivity[, 2]))
-newActivity[, 1] <- as.numeric(as.character(newActivity[, 1]))
-newDataFrameF <- as.data.frame(cbind(newActivity, fVector))
-# Creates 2 subsets, one for each 'weekday' or 'weekend'
-newDataFrameWeekdays <- subset(newDataFrameF, fVector == "weekday")
-newDataFrameWeekends <- subset(newDataFrameF, fVector == "weekend")
-avgweekdays <- aggregate(stepFilled ~ interval, FUN = mean, data = newDataFrameWeekdays)
-avgweekends <- aggregate(stepFilled ~ interval, FUN = mean, data = newDataFrameWeekends)
-# Graphics set up
-par(mfrow = c(2, 1))
-par(cex = 0.6)
-par(mar = c(4, 4, 2, 0), oma = c(1, 1, 1, 1))
-with(avgweekdays, plot(interval, stepFilled, type = "l", main = "Weekdays", 
-    ylab = "Avg Num.Steps"))
-abline(v = avgweekdays[avgweekdays[, 2] == max(avgweekdays[, 2]), ][1], col = "blue", 
-    lty = 2, lwd = 1)
-with(avgweekends, plot(interval, stepFilled, type = "l", main = "Weekends", 
-    ylab = "Avg Num.Steps"))
-abline(v = avgweekends[avgweekends[, 2] == max(avgweekends[, 2]), ][1], col = "blue", 
-    lty = 2, lwd = 1)
+ # Create a fVector, since 1:9504 are weekdays, and the others are weekends
+ fVector<-c(rep("weekday", 9504),rep("weekend", 8064))
+ newActivity[,3]<-as.numeric(as.character(newActivity[,3]))
+ newActivity[,2]<-as.Date(as.character(newActivity[,2]))
+ newActivity[,1]<-as.numeric(as.character(newActivity[,1]))  
+ newDataFrameF<-as.data.frame(cbind(newActivity, fVector)) 
+ # Creates 2 subsets, one for each "weekday" or "weekend"
+ newDataFrameWeekdays<-subset(newDataFrameF, fVector=="weekday") 
+ newDataFrameWeekends<-subset(newDataFrameF, fVector=="weekend")
+ avgweekdays<-aggregate(stepFilled ~ interval, FUN = mean, data = newDataFrameWeekdays)
+ avgweekends<-aggregate(stepFilled ~ interval, FUN = mean, data = newDataFrameWeekends)
+ # Graphics set up
+ par(mfrow = c(2, 1))
+ par(cex = 0.8)
+ par(mar = c(2, 4, 3, 0), oma = c(2, 1, 1, 1)) 
+ with(avgweekdays, plot(interval, stepFilled, type="l", main="5-minute interval VS. average number of steps \nWeekdays",ylab="Avg Num.Steps"))
+ abline(v=avgweekdays[avgweekdays[,2]==max(avgweekdays[,2]),][1],col = "blue",lty=2,lwd=1) 
+ with(avgweekends, plot(interval, stepFilled, type="l", main="Weekends",ylab="Avg Num.Steps"))
+ abline(v=avgweekends[avgweekends[,2]==max(avgweekends[,2]),][1],col = "blue",lty=2,lwd=1) 
 ```
 
-![plot of chunk factor](figure/factor.png) 
+![plot of chunk factor](PA1_template-figure/factor.png) 
 
 
 The two patterns are different, although the maximum is very close.
 
-End of Assignment ====================================================================================================
+# End of Assignment =======================================================
